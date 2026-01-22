@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IRL QR Reader</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>QR Reader</h1>
+      
+      <div class="card">
+        <button id="toggle-btn" type="button">Start Camera</button>
+        
+        <div id="result-container" class="hidden" style="margin-top: 1.5em;">
+          <p>Detected Data:</p>
+          <p><code id="result-text" style="background: rgba(100,108,255,0.1); padding: 4px; border-radius: 4px;">...</code></p>
+          <div style="margin-top: 20px;">
+            <button id="result-link" class="hidden">Open Link</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="video-wrapper" class="video-wrapper">
+        <video id="qr-video" muted playsinline></video>
+        <canvas id="qr-canvas"></canvas>
+      </div>
+
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
