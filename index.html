@@ -7,24 +7,20 @@
   </head>
   <body>
     <div id="app">
-      <h1>QR Reader</h1>
+      <!-- <h1>QR Reader</h1> -->
       
-      <div class="card">
-        <button id="toggle-btn" type="button">Start Camera</button>
+      <button id="scanner-block" class="scanner-block" type="button">
         
-        <div id="result-container" class="hidden" style="margin-top: 1.5em;">
-          <p>Detected Data:</p>
-          <p><code id="result-text" style="background: rgba(100,108,255,0.1); padding: 4px; border-radius: 4px;">...</code></p>
-          <div style="margin-top: 20px;">
-            <button id="result-link" class="hidden">Open Link</button>
-          </div>
+        <div id="result-bar" class="result-bar">
+          <span id="result-text">Show a QR Code</span>
         </div>
-      </div>
 
-      <div id="video-wrapper" class="video-wrapper">
-        <video id="qr-video" muted playsinline></video>
-        <canvas id="qr-canvas"></canvas>
-      </div>
+        <div class="video-container">
+          <span class="placeholder-text">Tap to Start QR Scan</span>
+          <video id="qr-video" muted playsinline></video>
+          <canvas id="qr-canvas"></canvas>
+        </div>
+      </button>
 
     </div>
     <script type="module" src="/src/main.ts"></script>
