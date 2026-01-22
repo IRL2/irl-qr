@@ -15,33 +15,14 @@ const context = canvas.getContext('2d', { willReadFrequently: true });
 
 if (!context) throw new Error("Could not get canvas context");
 
-function drawQuad(location: {
-  topLeftCorner: { x: number; y: number };
-  topRightCorner: { x: number; y: number };
-  bottomRightCorner: { x: number; y: number };
-  bottomLeftCorner: { x: number; y: number };
-}, color: string) {
-  if (!context) return;
-  context.beginPath();
-  context.moveTo(location.topLeftCorner.x, location.topLeftCorner.y);
-  context.lineTo(location.topRightCorner.x, location.topRightCorner.y);
-  context.lineTo(location.bottomRightCorner.x, location.bottomRightCorner.y);
-  context.lineTo(location.bottomLeftCorner.x, location.bottomLeftCorner.y);
-  context.closePath(); 
-  context.lineWidth = 4;
-  context.strokeStyle = color;
-  context.stroke();
-}
-
 function isValidHttpUrl(string: string) {
   try {
-    const url = new URL(string);  
+    const url = new URL(string);
     return url.protocol === "http:" || url.protocol === "https:";
   } catch (_) {
-    return false;  
-  } 
+    return false;
+  }
 }
-
 
 function tick() {
   if (!isScanning) return;
@@ -58,11 +39,7 @@ function tick() {
     });
 
     if (code) {
-
       if (isValidHttpUrl(code.data)) {
-        
-        drawQuad(code.location, "#ff6464");
-        
         if (code.data !== lastResultStr) {
           lastResultStr = code.data;
           handleDetection(code.data);
