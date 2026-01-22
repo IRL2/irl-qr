@@ -12,7 +12,7 @@ Clone this repo and install its dependencies:
 ## How to use
 
 ```bash
-git clone https://github.com/IRL2/nanover-web.git
+git clone https://github.com/IRL2/irl-qr.git
 cd nanover-web
 npm install
 ```
