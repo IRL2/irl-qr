@@ -15,7 +15,6 @@ const context = canvas.getContext('2d', { willReadFrequently: true });
 
 if (!context) throw new Error("Could not get canvas context");
 
-
 function drawQuad(location: {
   topLeftCorner: { x: number; y: number };
   topRightCorner: { x: number; y: number };
@@ -34,6 +33,16 @@ function drawQuad(location: {
   context.stroke();
 }
 
+function isValidHttpUrl(string: string) {
+  try {
+    const url = new URL(string);  
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch (_) {
+    return false;  
+  } 
+}
+
+
 function tick() {
   if (!isScanning) return;
 
@@ -49,10 +58,15 @@ function tick() {
     });
 
     if (code) {
-      drawQuad(code.location, "#ff6464");
-      if (code.data !== lastResultStr) {
-        lastResultStr = code.data;
-        handleDetection(code.data);
+
+      if (isValidHttpUrl(code.data)) {
+        
+        drawQuad(code.location, "#ff6464");
+        
+        if (code.data !== lastResultStr) {
+          lastResultStr = code.data;
+          handleDetection(code.data);
+        }
       }
     }
   }
@@ -60,28 +74,11 @@ function tick() {
 }
 
 function handleDetection(data: string) {
-  const isUrl = isValidHttpUrl(data);
+  resultText.textContent = `Tap to open -> ${data}`;
   resultBar.classList.add('detected');
-
-  if (isUrl) {
-    resultText.textContent = `Tap to open -> ${data}`;
-    detectedUrl = data;
-    scannerBlock.classList.add('pulsating');
-  } else {
-    resultText.textContent = data;
-    resultText.textContent = data;
-    detectedUrl = "";
-    scannerBlock.classList.remove('pulsating');
-  }
-}
-
-function isValidHttpUrl(string: string) {
-  try {
-    const url = new URL(string);
-    return url.protocol === "http:" || url.protocol === "https:";
-  } catch (_) {
-    return false;
-  }
+  
+  detectedUrl = data;
+  scannerBlock.classList.add('pulsating');
 }
 
 async function startScan() {
@@ -97,7 +94,6 @@ async function startScan() {
     isScanning = true;
     scannerBlock.classList.add('scanning');
 
-    
     resultBar.classList.remove('detected'); 
     resultText.textContent = "Show a QR Code";
     
