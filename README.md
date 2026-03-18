@@ -33,3 +33,6 @@ Preview the standalone web package:
 ```bash
 npm run preview
 ```
+
+
+Detection chime sound by jerry.berumen -- https://freesound.org/s/772765/ -- License: Attribution 4.0

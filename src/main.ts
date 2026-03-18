@@ -5,6 +5,11 @@ let isScanning = false;
 let stream: MediaStream | null = null;
 let lastResultStr = "";
 let detectedUrl = "";
+let notificationRunId = 0;
+let activeNotificationAudio: HTMLAudioElement | null = null;
+
+const NOTIFICATION_SOUND_SRC = '/bell.wav';
+const NOTIFICATION_PLAY_COUNT = 3;
 
 const scannerBlock = document.getElementById('scanner-block') as HTMLButtonElement;
 const resultBar = document.getElementById('result-bar') as HTMLDivElement;
@@ -39,6 +44,54 @@ function isValidHttpUrl(string: string) {
     return url.protocol === "http:" || url.protocol === "https:";
   } catch (_) {
     return false;
+  }
+}
+
+function stopNotificationSequence() {
+  notificationRunId += 1;
+  if (activeNotificationAudio) {
+    activeNotificationAudio.pause();
+    activeNotificationAudio.currentTime = 0;
+    activeNotificationAudio = null;
+  }
+}
+
+async function playNotificationOnce(runId: number) {
+  if (runId !== notificationRunId) return false;
+
+  const audio = new Audio(NOTIFICATION_SOUND_SRC);
+  activeNotificationAudio = audio;
+
+  try {
+    await audio.play();
+  } catch (err) {
+    console.error('Notification play failed:', err);
+    if (activeNotificationAudio === audio) {
+      activeNotificationAudio = null;
+    }
+    return false;
+  }
+
+  await new Promise<void>((resolve) => {
+    const finish = () => resolve();
+    audio.addEventListener('ended', finish, { once: true });
+    audio.addEventListener('error', finish, { once: true });
+  });
+
+  if (activeNotificationAudio === audio) {
+    activeNotificationAudio = null;
+  }
+
+  return runId === notificationRunId;
+}
+
+async function playDetectionNotificationSequence() {
+  stopNotificationSequence();
+  const runId = notificationRunId;
+
+  for (let i = 0; i < NOTIFICATION_PLAY_COUNT; i += 1) {
+    const shouldContinue = await playNotificationOnce(runId);
+    if (!shouldContinue) return;
   }
 }
 
@@ -79,6 +132,8 @@ function handleDetection(data: string) {
   
   detectedUrl = data;
   scannerBlock.classList.add('pulsating');
+
+  void playDetectionNotificationSequence();
 }
 
 async function startScan() {
@@ -111,6 +166,7 @@ async function startScan() {
 
 function stopScan() {
   isScanning = false;
+  stopNotificationSequence();
   if (stream) {
     stream.getTracks().forEach(track => track.stop());
     stream = null;
@@ -130,6 +186,7 @@ scannerBlock.addEventListener('click', () => {
     return;
   }
   if (isScanning && detectedUrl) {
+    stopNotificationSequence();
     window.open(detectedUrl, '_blank');
     return;
   }
