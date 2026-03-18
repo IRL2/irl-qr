@@ -154,5 +154,5 @@ canvas {
 
 .scanner-block.pulsating {
   overflow: visible;
-  animation: pulse-glow 4s infinite;
+  animation: pulse-glow 2.5s infinite;
 }
