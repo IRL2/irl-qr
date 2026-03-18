@@ -8,7 +8,7 @@ let detectedUrl = "";
 let notificationRunId = 0;
 let activeNotificationAudio: HTMLAudioElement | null = null;
 
-const NOTIFICATION_SOUND_SRC = '/bell.wav';
+const NOTIFICATION_SOUND_SRC = './bell.wav';
 const NOTIFICATION_PLAY_COUNT = 3;
 
 const scannerBlock = document.getElementById('scanner-block') as HTMLButtonElement;
