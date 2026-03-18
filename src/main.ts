@@ -188,6 +188,7 @@ scannerBlock.addEventListener('click', () => {
   if (isScanning && detectedUrl) {
     stopNotificationSequence();
     window.open(detectedUrl, '_blank');
+    stopScan();
     return;
   }
   stopScan();
