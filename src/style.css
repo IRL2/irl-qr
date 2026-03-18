@@ -148,10 +148,11 @@ canvas {
 
 @keyframes pulse-glow {
   0% { box-shadow: 0 0 0 0 rgba(253, 158, 90, 0.7); border-color: #fd9e5a; }
-  70% { box-shadow: 0 0 0 300px rgba(253, 158, 90, 0); border-color: #FD9E5A; }
+  70% { box-shadow: 0 0 0 200vmax rgba(253, 158, 90, 0); border-color: #FD9E5A; }
   100% { box-shadow: 0 0 0 0 rgba(253, 158, 90, 0); border-color: #000; }
 }
 
 .scanner-block.pulsating {
-  animation: pulse-glow 2s infinite;
+  overflow: visible;
+  animation: pulse-glow 4s infinite;
 }
